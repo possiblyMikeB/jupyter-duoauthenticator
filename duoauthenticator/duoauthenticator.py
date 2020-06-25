@@ -30,6 +30,9 @@ class DuoHandler(LoginHandler):
             # no sig_response, do primary auth and generate the request
             auth = yield self.authenticator.do_primary_auth(self,data)
             if auth:
+                if isinstance(auth, str):
+                    auth = dict(name=auth)
+                    
                 sig_request = duo_web.sign_request(
                     self.authenticator.ikey,
                     self.authenticator.skey,
